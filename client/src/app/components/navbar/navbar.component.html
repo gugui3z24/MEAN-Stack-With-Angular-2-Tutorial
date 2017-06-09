@@ -20,7 +20,7 @@
         <li><a href="#contact">Blog</a></li>
         <li><a href="#contact">Login</a></li>
         <li><a href="#contact">Logout</a></li>
-        <li><a href="#contact">Register</a></li>
+        <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a routerLink="/register">Register</a></li>
       </ul>
     </div>
     <!--/.nav-collapse -->
