@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AuthService } from '../../services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -9,9 +11,18 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 export class RegisterComponent implements OnInit {
 
   form: FormGroup;
+  message;
+  messageClass;
+  processing = false;
+  emailValid;
+  emailMessage;
+  usernameValid;
+  usernameMessage;
 
   constructor(
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private authService: AuthService,
+    private router: Router
   ) {
     this.createForm(); // Create Angular 2 Form when component loads
   }
@@ -43,6 +54,22 @@ export class RegisterComponent implements OnInit {
       // Confirm Password Input
       confirm: ['', Validators.required] // Field is required
     }, { validator: this.matchingPasswords('password', 'confirm') }); // Add custom validator to form for matching passwords
+  }
+
+  // Function to disable the registration form
+  disableForm() {
+    this.form.controls['email'].disable();
+    this.form.controls['username'].disable();
+    this.form.controls['password'].disable();
+    this.form.controls['confirm'].disable();
+  }
+
+  // Function to enable the registration form
+  enableForm() {
+    this.form.controls['email'].enable();
+    this.form.controls['username'].enable();
+    this.form.controls['password'].enable();
+    this.form.controls['confirm'].enable();
   }
 
   // Function to validate e-mail is proper format
@@ -95,7 +122,63 @@ export class RegisterComponent implements OnInit {
 
   // Function to submit form
   onRegisterSubmit() {
-    console.log('form submitted');
+    this.processing = true; // Used to notify HTML that form is in processing, so that it can be disabled
+    this.disableForm(); // Disable the form
+    // Create user object form user's inputs
+    const user = {
+      email: this.form.get('email').value, // E-mail input field
+      username: this.form.get('username').value, // Username input field
+      password: this.form.get('password').value // Password input field
+    }
+
+    // Function from authentication service to register user
+    this.authService.registerUser(user).subscribe(data => {
+      // Resposne from registration attempt
+      if (!data.success) {
+        this.messageClass = 'alert alert-danger'; // Set an error class
+        this.message = data.message; // Set an error message
+        this.processing = false; // Re-enable submit button
+        this.enableForm(); // Re-enable form
+      } else {
+        this.messageClass = 'alert alert-success'; // Set a success class
+        this.message = data.message; // Set a success message
+        // After 2 second timeout, navigate to the login page
+        setTimeout(() => {
+          this.router.navigate(['/login']); // Redirect to login view
+        }, 2000);
+      }
+    });
+
+  }
+
+  // Function to check if e-mail is taken
+  checkEmail() {
+    // Function from authentication file to check if e-mail is taken
+    this.authService.checkEmail(this.form.get('email').value).subscribe(data => {
+      // Check if success true or false was returned from API
+      if (!data.success) {
+        this.emailValid = false; // Return email as invalid
+        this.emailMessage = data.message; // Return error message
+      } else {
+        this.emailValid = true; // Return email as valid
+        this.emailMessage = data.message; // Return success message
+      }
+    });
+  }
+
+  // Function to check if username is available
+  checkUsername() {
+    // Function from authentication file to check if username is taken
+    this.authService.checkUsername(this.form.get('username').value).subscribe(data => {
+      // Check if success true or success false was returned from API
+      if (!data.success) {
+        this.usernameValid = false; // Return username as invalid
+        this.usernameMessage = data.message; // Return error message
+      } else {
+        this.usernameValid = true; // Return username as valid
+        this.usernameMessage = data.message; // Return success message
+      }
+    });
   }
 
   ngOnInit() {
