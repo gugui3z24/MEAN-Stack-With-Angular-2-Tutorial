@@ -5,6 +5,7 @@ const express = require('express'); // Fast, unopinionated, minimalist web frame
 const app = express(); // Initiate Express Application
 const router = express.Router(); // Creates a new router object.
 const mongoose = require('mongoose'); // Node Tool for MongoDB
+mongoose.Promise = global.Promise;
 const config = require('./config/database'); // Mongoose Config
 const path = require('path'); // NodeJS Package for file paths
 const authentication = require('./routes/authentication')(router); // Import Authentication Routes
@@ -12,7 +13,6 @@ const bodyParser = require('body-parser'); // Parse incoming request bodies in a
 const cors = require('cors'); // CORS is a node.js package for providing a Connect/Express middleware that can be used to enable CORS with various options.
 
 // Database Connection
-mongoose.Promise = global.Promise;
 mongoose.connect(config.uri, (err) => {
   if (err) {
     console.log('Could NOT connect to database: ', err);
