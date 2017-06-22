@@ -5,6 +5,7 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { RegisterComponent } from './components/register/register.component';
 import { LoginComponent } from './components/login/login.component';
 import { ProfileComponent } from './components/profile/profile.component';
+import { BlogComponent } from './components/blog/blog.component';
 import { AuthGuard } from './guards/auth.guard';
 import { NotAuthGuard } from './guards/notAuth.guard';
 
@@ -33,6 +34,11 @@ const appRoutes: Routes = [
     path: 'profile',
     component: ProfileComponent, // Profile Route
     canActivate: [AuthGuard] // User must be logged in to view this route
+  },
+  {
+    path: 'blog',
+    component: BlogComponent, // Blog Route,
+    canActivate: [BlogComponent] // User must be logged in to view this route
   },
   { path: '**', component: HomeComponent } // "Catch-All" Route
 ];

@@ -97,8 +97,7 @@ module.exports = (router) => {
       res.json({ success: false, message: 'Username was not provided' }); // Return error
     } else {
       // Look for username in database
-      User.findOne({ username: req.params.username }, (err, user) => {
-        // Check if connection error was found
+      User.findOne({ username: req.params.username }, (err, user) => { // Check if connection error was found
         if (err) {
           res.json({ success: false, message: err }); // Return connection error
         } else {
@@ -141,7 +140,14 @@ module.exports = (router) => {
                 res.json({ success: false, message: 'Password invalid' }); // Return error
               } else {
                 const token = jwt.sign({ userId: user._id }, config.secret, { expiresIn: '24h' }); // Create a token for client
-                res.json({ success: true, message: 'Success!', token: token, user: { username: user.username } }); // Return success and token to frontend
+                res.json({
+                  success: true,
+                  message: 'Success!',
+                  token: token,
+                  user: {
+                    username: user.username
+                  }
+                }); // Return success and token to frontend
               }
             }
           }
