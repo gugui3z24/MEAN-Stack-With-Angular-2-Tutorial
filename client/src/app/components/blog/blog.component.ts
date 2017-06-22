@@ -17,6 +17,7 @@ export class BlogComponent implements OnInit {
   form;
   processing = false;
   username;
+  blogPosts;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -29,12 +30,14 @@ export class BlogComponent implements OnInit {
   // Function to create new blog form
   createNewBlogForm() {
     this.form = this.formBuilder.group({
+      // Title field
       title: ['', Validators.compose([
         Validators.required,
         Validators.maxLength(50),
         Validators.minLength(5),
         this.alphaNumericValidation
       ])],
+      // Body field
       body: ['', Validators.compose([
         Validators.required,
         Validators.maxLength(500),
@@ -74,7 +77,7 @@ export class BlogComponent implements OnInit {
   // Reload blogs on current page
   reloadBlogs() {
     this.loadingBlogs = true; // Used to lock button
-    // Get All Blogs
+    this.getAllBlogs(); // Add any new blogs to the page
     setTimeout(() => {
       this.loadingBlogs = false; // Release button lock after four seconds
     }, 4000);
@@ -108,6 +111,7 @@ export class BlogComponent implements OnInit {
       } else {
         this.messageClass = 'alert alert-success'; // Return success class
         this.message = data.message; // Return success message
+        this.getAllBlogs();
         // Clear form data after two seconds
         setTimeout(() => {
           this.newPost = false; // Hide form
@@ -125,11 +129,21 @@ export class BlogComponent implements OnInit {
     window.location.reload(); // Clear all variable states
   }
 
+  // Function to get all blogs from the database
+  getAllBlogs() {
+    // Function to GET all blogs from database
+    this.blogService.getAllBlogs().subscribe(data => {
+      this.blogPosts = data.blogs; // Assign array to use in HTML
+    });
+  }
+
   ngOnInit() {
     // Get profile username on page load
     this.authService.getProfile().subscribe(profile => {
       this.username = profile.user.username; // Used when creating new blog posts and comments
     });
+
+    this.getAllBlogs(); // Get all blogs on component load
   }
 
 }

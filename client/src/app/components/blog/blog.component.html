@@ -22,7 +22,9 @@
   <div class="form-group">
     <label for="title">Title</label>
     <div [ngClass]="{'has-success': form.controls.title.valid, 'has-error': form.controls.title.dirty && form.controls.title.errors}">
+      <!-- Title Input -->
       <input type="text" name="title" class="form-control" placeholder="*Blog Title" autocomplete="off" formControlName="title" />
+      <!-- Validation -->
       <ul class="help-block">
         <li *ngIf="form.controls.title.dirty && form.controls.title.errors?.required">This field is required.</li>
         <li *ngIf="(form.controls.title.dirty && form.controls.title.errors?.minlength) || (form.controls.title.dirty && form.controls.title.errors?.maxlength)">Max length: 50, Min length: 5</li>
@@ -35,7 +37,9 @@
   <div class="form-group">
     <label for="body">Body</label>
     <div [ngClass]="{'has-success': form.controls.body.valid, 'has-error': form.controls.body.dirty && form.controls.body.errors}">
+      <!-- Body Input -->
       <textarea name="body" rows="8" cols="80" placeholder="*Body" class="form-control" formControlName="body"></textarea>
+      <!-- Validation -->
       <ul class="help-block">
         <li *ngIf="form.controls.body.dirty && form.controls.body.errors?.required">This field is required.</li>
         <li *ngIf="(form.controls.body.dirty && form.controls.body.errors?.minlength) || (form.controls.body.dirty && form.controls.body.errors?.maxlength)">Max length: 500, Min length: 5</li>
@@ -54,40 +58,39 @@
 <!-- Panel Start -->
 <div *ngIf="!newPost">
   <!-- Panel Outer Layer -->
-  <div class="panel panel-primary">
+  <div class="panel panel-primary" *ngFor="let blog of blogPosts">
 
     <!-- Panel Title -->
     <div class="panel-heading">
-      <h3 class="panel-title">Post Title</h3>
+      <h3 class="panel-title">{{ blog.title }}</h3>
     </div>
 
     <!-- Panel Body -->
     <div class="panel-body">
-      Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
-      in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+      {{ blog.body }}
     </div>
 
     <!-- Panel Footer Start -->
     <div class="panel-footer">
-      <strong>Posted by: </strong>gugui3z24
+      <strong>Posted by: </strong>{{ blog.createdBy }}
       <br />
-      <strong>Date: </strong>June 20, 2017
+      <strong>Date: </strong>{{ blog.createdAt | date:'MMM dd, yyyy' }}
       <br />
-      <div>
-        <strong>Likes: </strong>25
+      <div *ngIf="username === blog.createdBy">
+        <strong>Likes: </strong>{{ blog.likes }}
         <br />
-        <strong>Dislikes: </strong>22
+        <strong>Dislikes: </strong>{{ blog.dislikes }}
       </div>
 
       <!-- Edit Button -->
-      <a href="#"><button type="button" name="button" class="btn btn-sm btn-info">Edit</button></a>
+      <a [routerLink]="['/edit-blog/', blog._id]" *ngIf="username === blog.createdBy"><button type="button" name="button" class="btn btn-sm btn-info">Edit</button></a>
       <!-- Delete Button -->
-      <a href="#"><button type="button" name="button" class="btn btn-sm btn-danger">Delete</button></a>
+      <a [routerLink]="['/delete-blog/', blog._id]" *ngIf="username === blog.createdBy"><button type="button" name="button" class="btn btn-sm btn-danger">Delete</button></a>
 
       <!-- Likes Dropdown  -->
       <div class="dropdown">
         <!-- Like Button -->
-        <button type="button" name="button" class="btn btn-sm btn-success"><span class="glyphicon glyphicon-thumbs-up">&nbsp;</span>Likes: 21</button>
+        <button type="button" name="button" class="btn btn-sm btn-success" *ngIf="username !== blog.createdBy"><span class="glyphicon glyphicon-thumbs-up">&nbsp;</span>Likes: 21</button>
         <!-- Dropdown Menu Items -->
         <div class="dropdown-content">
           <a href="#">gugui3z24</a>
@@ -99,7 +102,7 @@
       <!-- Dislikes Dropdown  -->
       <div class="dropdown">
         <!-- Dislike Button -->
-        <button type="button" name="button" class="btn btn-sm btn-warning"><span class="glyphicon glyphicon-thumbs-down">&nbsp;</span>Dislikes: 15</button>
+        <button type="button" name="button" class="btn btn-sm btn-warning" *ngIf="username !== blog.createdBy"><span class="glyphicon glyphicon-thumbs-down">&nbsp;</span>Dislikes: 15</button>
         <!-- Dropdown Menu Items -->
         <div class="dropdown-content">
           <a href="#">gugui3z24</a>
