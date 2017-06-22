@@ -29,14 +29,12 @@ export class BlogComponent implements OnInit {
   // Function to create new blog form
   createNewBlogForm() {
     this.form = this.formBuilder.group({
-      // Title field
       title: ['', Validators.compose([
         Validators.required,
         Validators.maxLength(50),
         Validators.minLength(5),
         this.alphaNumericValidation
       ])],
-      // Body field
       body: ['', Validators.compose([
         Validators.required,
         Validators.maxLength(500),
