@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnInit } from '@angular/core';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import 'rxjs/add/operator/map';
 import { tokenNotExpired } from 'angular2-jwt';
@@ -76,6 +76,22 @@ export class AuthService {
   // Function to check if user is logged in
   loggedIn() {
     return tokenNotExpired();
+  }
+
+  ngOnInit() {
+    const token = localStorage.getItem('token'); // Check if a token exists in local storage
+    // Check if the token actually exists
+    if (token) {
+      // Check if the token is not expired
+      if (this.loggedIn()) {
+        this.loadToken(); // Ensue user is logged in
+      } else {
+        this.logout(); // Should not have token; log user out
+      }
+    } else {
+      this.logout(); // Log the user out
+    }
+
   }
 
 

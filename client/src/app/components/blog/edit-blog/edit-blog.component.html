@@ -1,0 +1,33 @@
+<h1 class="page-header">Edit Blog</h1>
+
+<!-- Custom Success/Erro Message -->
+<div class="row show-hide-message" *ngIf="message">
+  <div [ngClass]="messageClass">
+    {{ message }}
+  </div>
+</div>
+
+<!-- Edit Blog Form -->
+<form (submit)="updateBlogSubmit()" *ngIf="!loading">
+  <!-- Title Field -->
+  <div class="form-group">
+    <label for="title">Title</label>
+    <!-- Title Input -->
+    <input [disabled]="processing" type="text" name="title" placeholder="*Blog Title" class="form-control" [(ngModel)]="blog.title" />
+  </div>
+
+  <!-- Body Field -->
+  <div class="form-group">
+    <label for="body">Body</label>
+    <!-- Body Input -->
+    <textarea [disabled]="processing" name="body" rows="8" cols="80" [(ngModel)]="blog.body" class="form-control" placeholder="*Blog Body"></textarea>
+  </div>
+
+  <!-- Delete Button -->
+  <a [routerLink]="['/delete-blog/', blog._id]"><button  [disabled]="processing"  type="button" name="button" class="btn btn-danger">Delete</button></a>
+  <!-- Go Back Button -->
+  <button [disabled]="processing" type="button" name="button" class="btn btn-success" (click)="goBack()">Go Back</button>
+  <!-- Save Changes Button -->
+  <button [disabled]="processing" type="submit" name="save" class="btn btn-info">Save Changes</button>
+
+</form>
