@@ -49,4 +49,10 @@ export class BlogService {
     return this.http.put(this.domain + 'blogs/updateBlog/', blog, this.options).map(res => res.json());
   }
 
+  // Function to delete a blog
+  deleteBlog(id) {
+    this.createAuthenticationHeaders(); // Create headers
+    return this.http.delete(this.domain + 'blogs/deleteBlog/' + id, this.options).map(res => res.json());
+  }
+
 }
