@@ -106,7 +106,7 @@ module.exports = (router) => {
                 } else {
                   // Check if the user who requested single blog is the one who created it
                   if (user.username !== blog.createdBy) {
-                    res.json({ success: false, message: 'You are not authorized to eidt this blog.' }); // Return authentication reror
+                    res.json({ success: false, message: 'You are not authorized to edit this blog.' }); // Return authentication reror
                   } else {
                     res.json({ success: true, blog: blog }); // Return success
                   }
