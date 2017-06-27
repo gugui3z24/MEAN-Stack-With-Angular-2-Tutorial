@@ -198,5 +198,30 @@ module.exports = (router) => {
     });
   });
 
+  /* ===============================================================
+     Route to get user's public profile data
+  =============================================================== */
+  router.get('/publicProfile/:username', (req, res) => {
+    // Check if username was passed in the parameters
+    if (!req.params.username) {
+      res.json({ success: false, message: 'No username was provided' }); // Return error message
+    } else {
+      // Check the database for username
+      User.findOne({ username: req.params.username }).select('username email').exec((err, user) => {
+        // Check if error was found
+        if (err) {
+          res.json({ success: false, message: 'Something went wrong.' }); // Return error message
+        } else {
+          // Check if user was found in the database
+          if (!user) {
+            res.json({ success: false, message: 'Username not found.' }); // Return error message
+          } else {
+            res.json({ success: true, user: user }); // Return the public user's profile data
+          }
+        }
+      });
+    }
+  });
+
   return router; // Return router object to main index.js
 }

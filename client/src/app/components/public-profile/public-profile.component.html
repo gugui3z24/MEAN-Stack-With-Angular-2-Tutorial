@@ -1,0 +1,16 @@
+<h1 class="page-header">Public Profile</h1>
+
+<!-- Custom Success/Error Message -->
+<div class="row show-hide-message" *ngIf="message">
+  <div [ngClass]="messageClass">
+    {{ message }}
+  </div>
+</div>
+
+<!-- Table to Display User Info -->
+<ul *ngIf="foundProfile" class="list-group">
+  <!-- Username -->
+  <li class="list-group-item"><strong>Username: </strong>{{ username }}</li>
+  <!-- E-Mail -->
+  <li class="list-group-item"><strong>E-Mail: </strong>{{ email }}</li>
+</ul>
