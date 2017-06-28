@@ -31,6 +31,7 @@ export class PublicProfileComponent implements OnInit {
       } else {
         this.username = data.user.username; // Save the username for use in HTML
         this.email = data.user.email; // Save the email for use in HTML
+        this.foundProfile = true; // Enable profile table
       }
     });
   }
