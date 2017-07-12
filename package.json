@@ -4,7 +4,8 @@
   "description": "MEAN Stack with Angular 2",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "build": "cd client && ng build --prod && cd.. && node index.js"
   },
   "repository": {
     "type": "git",
