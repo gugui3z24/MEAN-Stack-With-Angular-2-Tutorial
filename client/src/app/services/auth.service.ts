@@ -2,12 +2,13 @@ import { Injectable } from '@angular/core';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import 'rxjs/add/operator/map';
 import { tokenNotExpired } from 'angular2-jwt';
+import { environment } from '../../environments/environment';
 
 @Injectable()
 export class AuthService {
 
   // domain = ""; // Production
-  domain = "http://localhost:8080/" // Development
+  domain = environment.domain;
   authToken;
   user;
   options;

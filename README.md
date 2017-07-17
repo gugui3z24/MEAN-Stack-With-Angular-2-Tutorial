@@ -30,21 +30,21 @@ $ npm install
 - Installation is complete. Navigate to the root directory and then:  
 
 ## Production
--- Navigate to: client/src/app/services/auth.services.ts & change the API directory "domain" variable
+-- In root directory:
 ```
 $ npm run build
+$ npm start
 ```
 -- Access production server at: http://localhost:8080
 
 ## Development
--- Navigate to: client/src/app/services/auth.services.ts & change the API directory "domain" variable
-```
-$ npm start
-```
--- In another window:
 ```
 $ cd client/
 $ ng serve
+```
+-- In another window, from root directory run:
+```
+$ npm start
 ```
 -- Access development server at: http://localhost:4200
 
