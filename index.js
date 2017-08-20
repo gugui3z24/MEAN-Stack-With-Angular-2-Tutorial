@@ -15,7 +15,9 @@ const bodyParser = require('body-parser'); // Parse incoming request bodies in a
 const cors = require('cors'); // CORS is a node.js package for providing a Connect/Express middleware that can be used to enable CORS with various options.
 const port = process.env.PORT || 8080; // Allows heroku to set port
 // Database Connection
-mongoose.connect(config.uri, (err) => {
+mongoose.connect(config.uri, {
+  useMongoClient: true,
+}, (err) => {
   // Check if database was able to connect
   if (err) {
     console.log('Could NOT connect to database: ', err); // Return error message
