@@ -108,6 +108,8 @@ const blogSchema = new Schema({
     comment: { type: String, validate: commentValidators },
     commentator: { type: String }
   }]
+}, {
+  usePushEach: true
 });
 
 // Export Module/Schema
